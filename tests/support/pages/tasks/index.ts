@@ -11,7 +11,7 @@ export class TasksPage {
     }
 
     async goHomePage() {
-        await this.page.goto('http://localhost:3000')
+        await this.page.goto('/')
     }
 
     async create(task: TaskModel) {
@@ -26,9 +26,19 @@ export class TasksPage {
         await target.click()
     }
 
+    async remove(taskName: string) {
+        const target = this.page.locator(`xpath=//p[text()="${taskName}"]/..//button[contains(@class, "Delete")]`)
+        await target.click()
+    }
+
     async shouldHaveText(taskName: string) {
         const target = this.page.locator(`css=.task-item p >> text=${taskName}`)
         await expect(target).toBeVisible
+    }
+
+    async shouldNotExist(taskName: string) {
+        const target = this.page.locator(`css=.task-item p >> text=${taskName}`)
+        await expect(target).not.toBeVisible
     }
 
     async alertHaveText(text: string) {
